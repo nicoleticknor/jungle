@@ -3,10 +3,6 @@ require 'rails_helper'
 RSpec.describe Product, type: :model do
   describe 'Validations' do
 
-    # before do
-      # @category = Category.new(:id => 1, :name => "Apparel")
-    # end
-
     it 'is valid when a name, price, quantity, and category_id are given' do
       @category = Category.new(:id => 1, :name => "Apparel")
       @product = Product.new(:name => "Artificial Skin", :price => 39.99, :quantity => 10, :category => @category)
