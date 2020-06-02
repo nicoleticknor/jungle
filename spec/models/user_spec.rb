@@ -35,8 +35,13 @@ RSpec.describe User, type: :model do
       end
       
       it "is invalid if created without a unique email" do
-          user1 = User.create(:first_name => "Harry", :last_name => "Manback", :email => "testing@email.com", :password => "testing", :password_confirmation => "testing")
+          user1 = User.new(:first_name => "Harry", :last_name => "Manback", :email => "testing@email.com", :password => "testing", :password_confirmation => "testing")
           expect(user1).to_not be_valid
+      end
+
+      it "is invalid if created without a unique email that is case-sensitive" do
+        user1 = User.new(:first_name => "Harry", :last_name => "Manback", :email => "TESTING@email.com", :password => "testing", :password_confirmation => "testing")
+        expect(user1).to_not be_valid
       end
     end
 
