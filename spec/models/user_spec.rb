@@ -18,7 +18,7 @@ RSpec.describe User, type: :model do
     end
 
     context 'last_name validations' do
-      it 'is invalid if created without a last_name' do
+      it 'is invalid if created without a first_name' do
         user = User.new(:first_name => nil, :last_name => "Manback", :email => "testing@email.com", :password => "testing", :password_confirmation => "testing")
         expect(user).to_not be_valid
       end
