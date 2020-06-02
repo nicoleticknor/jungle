@@ -26,17 +26,17 @@ RSpec.describe User, type: :model do
 
     context 'email validations' do
       before do
-        user2 = User.create(:first_name => "Harry", :last_name => "Manback", :email => "testing@email.com", :password => "testing", :password_confirmation => "testing")
+        user = User.create(:first_name => "Harry", :last_name => "Manback", :email => "testing@email.com", :password => "testing", :password_confirmation => "testing")
       end
 
       it 'is invalid if created without an email' do
-        user = User.new(:first_name => "Harry", :last_name => "Manback", :email => nil, :password => "testing", :password_confirmation => "testing")
-        expect(user).to_not be_valid
+        user1 = User.new(:first_name => "Harry", :last_name => "Manback", :email => nil, :password => "testing", :password_confirmation => "testing")
+        expect(user1).to_not be_valid
       end
       
       it "is invalid if created without a unique email" do
-          user1 = User.new(:first_name => "Harry", :last_name => "Manback", :email => "testing@email.com", :password => "testing", :password_confirmation => "testing")
-          expect(user1).to_not be_valid
+          user2 = User.new(:first_name => "Harry", :last_name => "Manback", :email => "testing@email.com", :password => "testing", :password_confirmation => "testing")
+          expect(user2).to_not be_valid
       end
 
       it "is invalid if created without a unique email that is case-sensitive" do
@@ -68,6 +68,40 @@ RSpec.describe User, type: :model do
     end
   end
 
-  # describe '.authenticate_with_credentials' do
-  # end
+  describe '.authenticate_with_credentials' do
+    before do
+      user = User.create(:first_name => "Harry", :last_name => "Manback", :email => "testing@email.com", :password => "testing", :password_confirmation => "testing")
+    end
+
+    context 'authenticating valid user' do
+      it 'is returns the user object when the username and password are correct' do
+        user = User.authenticate_with_credentials("testing@email.com", "testing")
+        expect(user).to_not be_nil
+      end
+
+      it 'is returns the user object when the username and password are correct but username is entered with leading and trailing spaces' do
+        user = User.authenticate_with_credentials("   testing@email.com   ", "testing")
+        expect(user).to_not be_nil
+      end
+
+      it 'is returns the user object when the username and password are correct and username is not case sensitive' do
+        user = User.authenticate_with_credentials("testiNg@Email.COm", "testing")
+        expect(user).to_not be_nil
+      end
+    end
+
+    context 'validations for email credential' do
+      it 'returns nil if the user email is not in the database' do
+        user = User.authenticate_with_credentials("notanemail@email.com", "testing")
+        expect(user).to be_nil
+      end
+    end
+
+    context 'validations for password credential' do
+      it 'returns nil if the user password does not authenticate with the user.authenticate method' do
+        user = User.authenticate_with_credentials("testing@email.com", "incorrectpassword")
+        expect(user).to be_nil
+      end
+    end
+  end
 end
