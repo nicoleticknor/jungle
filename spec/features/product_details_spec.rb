@@ -18,16 +18,13 @@ RSpec.feature "ProductDetails", type: :feature, js: true do
   scenario "They click on a product" do
     # ACT
     visit root_path
-    puts page.html
-    find("footer[data-cta_id='1']").click_link('Details »')
-    
+    page.find('.btn-default', match: :first).click
+
+    # VERIFY
+    expect(page).to have_css 'header.product-id-3'
 
     # DEBUG
     save_screenshot
-
-    # VERIFY
-    expect(page).to have_css 'article.product'
-    puts page.html
   end
 
 end
