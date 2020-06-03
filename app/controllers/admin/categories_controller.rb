@@ -1,4 +1,4 @@
-class Admin::CategoriesController < ApplicationController
+class Admin::CategoriesController < Admin::BaseAdminController
   def index
     @categories = Category.order(id: :asc).all
   end
