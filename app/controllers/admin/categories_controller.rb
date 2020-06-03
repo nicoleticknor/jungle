@@ -3,6 +3,10 @@ class Admin::CategoriesController < Admin::BaseAdminController
     @categories = Category.order(id: :asc).all
   end
 
+  def new
+    @category = Category.new
+  end
+
   def create
     @category = Category.new(category_params)
 
@@ -11,10 +15,6 @@ class Admin::CategoriesController < Admin::BaseAdminController
     else
       render :new
     end
-  end
-
-  def new
-    @category = Category.new
   end
 
   private
